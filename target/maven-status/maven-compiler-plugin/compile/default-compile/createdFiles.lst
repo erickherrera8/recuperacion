@@ -1,0 +1,5 @@
+CONTROLADOR\LibroControlador.class
+CONTROLADOR\pruebaBDD.class
+MODELO\Libro.class
+VISTA\Main.class
+CONTROLADOR\ConexionBDD.class

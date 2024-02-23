@@ -54,13 +54,62 @@ public class LibroControlador {
         }
     }
 
-    public ArrayList<Object[]> listarLibros() {
+    public void eliminarLibro(int id) {
+        try {
+            String sql = "DELETE FROM libros WHERE id = ?";
+            ejecutar = conectar.prepareStatement(sql);
+            ejecutar.setInt(1, id);
+            ejecutar.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Libro eliminado con éxito");
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar libro: " + e.getMessage());
+        }
+    }
+
+public ArrayList<Object[]> listarLibros() {
     ArrayList<Object[]> listaLibros = new ArrayList<>();
     
     try {
         String sql = "CALL ListarLibros()";
         ejecutar = conectar.prepareStatement(sql);
         res = ejecutar.executeQuery();
+        
+        int cont = 1;
+        while (res.next()) {
+            Object[] obLibro = new Object[9]; 
+            obLibro[0] = cont;
+            obLibro[1] = res.getObject("titulo");
+            obLibro[2] = res.getObject("autor");
+            obLibro[3] = res.getObject("ISBN");
+            obLibro[4] = res.getObject("paginas");
+            obLibro[5] = res.getObject("edicion");
+            obLibro[6] = res.getObject("editorial");
+            obLibro[7] = res.getObject("lugar");
+            obLibro[8] = res.getObject("fecha_edicion");
+            
+            listaLibros.add(obLibro);
+            cont++;
+        }
+        
+        ejecutar.close();
+        res.close(); 
+        return listaLibros;
+    } catch (SQLException e) {
+        System.out.println("Error al listar libros: " + e.getMessage());
+    }
+    
+    return null;
+}
+
+public ArrayList<Object[]> buscarLibros(String parteTitulo) {
+    ArrayList<Object[]> listaLibros = new ArrayList<>();
+    
+    try {
+        String sql = "CALL BuscarLibrosPorTitulo(?)";
+        CallableStatement cs = conectar.prepareCall(sql);
+        cs.setString(1, parteTitulo);
+        res = cs.executeQuery();
         
         int cont = 1;
         while (res.next()) {
@@ -79,64 +128,17 @@ public class LibroControlador {
             cont++;
         }
         
-        ejecutar.close();
+        cs.close();
+        res.close(); // Cerrar ResultSet
         return listaLibros;
     } catch (SQLException e) {
-        System.out.println("Error al listar libros: " + e.getMessage());
+        System.out.println("Error al buscar libros: " + e.getMessage());
     }
     
     return null;
 }
 
-
-    public void eliminarLibro(int id) {
-        try {
-            String sql = "DELETE FROM libros WHERE id = ?";
-            ejecutar = conectar.prepareStatement(sql);
-            ejecutar.setInt(1, id);
-            ejecutar.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Libro eliminado con éxito");
-        } catch (SQLException e) {
-            System.out.println("Error al eliminar libro: " + e.getMessage());
-        }
-    }
-
-    public ArrayList<Object[]> buscarLibros(String parteTitulo) {
-        ArrayList<Object[]> listaLibros = new ArrayList<>();
-        
-        try {
-            String sql = "CALL BuscarLibrosPorTitulo(?)";
-            CallableStatement cs = conectar.prepareCall(sql);
-            cs.setString(1, parteTitulo);
-            res = cs.executeQuery();
-            
-            int cont = 1;
-            while (res.next()) {
-                Object[] obLibro = new Object[8];
-                obLibro[0] = cont;
-                obLibro[1] = res.getObject("titulo");
-                obLibro[2] = res.getObject("autor");
-                obLibro[3] = res.getObject("ISBN");
-                obLibro[4] = res.getObject("paginas");
-                obLibro[5] = res.getObject("edicion");
-                obLibro[6] = res.getObject("editorial");
-                obLibro[7] = res.getObject("lugar");
-                obLibro[8] = res.getObject("fecha_edicion");
-                
-                listaLibros.add(obLibro);
-                cont++;
-            }
-            
-            cs.close();
-            return listaLibros;
-        } catch (SQLException e) {
-            System.out.println("Error al buscar libros: " + e.getMessage());
-        }
-        
-        return null;
-    }
-
+    
     public void editarLibro(int id, Libro libro) {
         try {
             String sql = "CALL EditarLibro(?, ?, ?, ?, ?, ?, ?, ?, ?)";
