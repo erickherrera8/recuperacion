@@ -1,22 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package MODELO;
-
+package modelo;
 public class Libro {
-    private int id;
     private String titulo;
     private String autor;
     private String ISBN;
     private int paginas;
-    private int edicion;
+    private String edicion;
     private String editorial;
     private String lugar;
-    private String fechaEdicion;
+    private String fecha;
 
-    public Libro(int id, String titulo, String autor, String ISBN, int paginas, int edicion, String editorial, String lugar, String fechaEdicion) {
-        this.id = id;
+    public Libro(String titulo, String autor, String ISBN, int paginas, String edicion, String editorial, String lugar, String fecha) {
         this.titulo = titulo;
         this.autor = autor;
         this.ISBN = ISBN;
@@ -24,15 +17,7 @@ public class Libro {
         this.edicion = edicion;
         this.editorial = editorial;
         this.lugar = lugar;
-        this.fechaEdicion = fechaEdicion;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.fecha = fecha;
     }
 
     public String getTitulo() {
@@ -67,11 +52,11 @@ public class Libro {
         this.paginas = paginas;
     }
 
-    public int getEdicion() {
+    public String getEdicion() {
         return edicion;
     }
 
-    public void setEdicion(int edicion) {
+    public void setEdicion(String edicion) {
         this.edicion = edicion;
     }
 
@@ -91,12 +76,17 @@ public class Libro {
         this.lugar = lugar;
     }
 
-    public String getFechaEdicion() {
-        return fechaEdicion;
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setFechaEdicion(String fechaEdicion) {
-        this.fechaEdicion = fechaEdicion;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
+
+    @Override
+    public String toString() {
+        return "Libro{" + "titulo=" + titulo + ", autor=" + autor + ", ISBN=" + ISBN + ", paginas=" + paginas + ", edicion=" + edicion + ", editorial=" + editorial + ", lugar=" + lugar + ", fecha=" + fecha + '}';
+    }
+    
 }
-
